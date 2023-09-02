@@ -1,0 +1,21 @@
+{
+  "name": "gasvue",
+  "version": "1.0.0",
+  "description": "gasVue3",
+  "main": "index.js",
+  "workspaces": [
+    "./backend",
+    "./frontend"
+  ],
+  "author": "yoshitaka",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build:backend": "yarn workspace backend run build",
+    "build:frontend": "yarn workspace frontend run build",
+    "build": "yarn run build:frontend && yarn run build:backend",
+    "push": "clasp push",
+    "open": "clasp open --webapp",
+    "gen-dts": "yarn workspace backend run gen-dts"
+  }
+}
