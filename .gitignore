@@ -29,3 +29,4 @@ pnpm-debug.log*
 # gasSecret
 .clasp.json
 backend/.clasp.json
+frontend/temp.config.js
