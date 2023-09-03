@@ -4,16 +4,19 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --no-clean",
+    "build": "vite build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "bootstrap": "^5.3.1",
     "core-js": "^3.8.3",
+    "vite-plugin-singlefile": "^0.13.1",
     "vue": "^3.2.13"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
+    "@vitejs/plugin-vue": "^3.2.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-typescript": "~5.0.0",
@@ -22,9 +25,8 @@
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "google-script-dts-generator": "^1.2.1",
-    "html-inline-script-webpack-plugin": "^3.2.0",
     "typescript": "~4.5.5",
-    "webpack-cdn-plugin": "^3.3.1",
+    "vite": "^3.2.3",
     "webpack-cli": "^5.1.4"
   }
 }
