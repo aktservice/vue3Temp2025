@@ -14,6 +14,10 @@ const decrement = () => {
 
 <template>
   <h1>{{ count }}</h1>
-  <button class="btn btn-success" @click="increment">Increment</button>
-  <button @click="decrement">Decrement</button>
+  <button type="button" class="btn btn-success" @click="increment">
+    Increment
+  </button>
+  <button type="button" class="btn btn-danger" @click="decrement">
+    Decrement
+  </button>
 </template>
