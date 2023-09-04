@@ -39,7 +39,7 @@ module.exports = {
     new GasPlugin(),
     // copy appsscript.json to dist dir
     new CopyWebpackPlugin({
-      patterns: [{ from: './appsscript.json' }, { from: './setting.js' }],
+      patterns: [{ from: './appsscript.json' }],
     }),
   ],
   optimization: {
