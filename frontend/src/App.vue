@@ -1,11 +1,11 @@
 <template>
   <v-app>
     <v-main>
-      <HelloWorld />
+      <Toppage></Toppage>
     </v-main>
   </v-app>
 </template>
 
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue';
+import Toppage from './components/Top-page.vue';
 </script>
