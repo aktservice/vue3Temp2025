@@ -69,13 +69,13 @@ global.buildSelectOptions = function (
   listSheetName = 'data'
 ) {
   let html = `<datalist id="${datalistId}">`;
-  const member = getWordsFromList(
+  const member = global.getWordsFromList(
     defaultListSheetIndex,
     listSheetName,
     defaultReturnSheetIndex,
     bucode
   );
-  const showValue = getWordsFromList(
+  const showValue = global.getWordsFromList(
     defaultListSheetIndex,
     listSheetName,
     7,
@@ -103,12 +103,12 @@ global.buildSelectOptions = function (
  * @date 2023-04-17
  * @returns {string[]}
  */
-function getWordsFromList(
+global.getWordsFromList = (
   listIndex: number,
   sheetName: string,
   returnIndex: number,
   bucode: number | string
-): string[] {
+): string[] => {
   const sp = SpreadsheetApp.openById(spId);
   const sh = sp.getSheetByName(sheetName);
   const data = sh?.getDataRange().getDisplayValues();
@@ -134,4 +134,4 @@ function getWordsFromList(
     memberJson.push(element);
   }
   return memberJson;
-}
+};
