@@ -6,6 +6,7 @@ onMounted(() => {
   console.log('onload');
   google.script.run
     .withSuccessHandler((ret) => {
+      console.log(ret);
       const list = document.getElementById('list');
       if (list != null) {
         list.innerHTML = ret;

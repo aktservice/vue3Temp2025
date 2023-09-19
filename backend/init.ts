@@ -7,6 +7,7 @@
  */
 export class appInit {
   static sp = SpreadsheetApp.getActiveSpreadsheet();
+  static spId = this.sp.getId();
   static SETTINGSHEETINFO = {
     SHEETNAME: 'setting',
     SETTINGINFOAREA: 'A:E',

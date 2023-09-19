@@ -1,41 +1,5 @@
 import { appInit } from './init';
-var spId = appInit.getAppDataSpId(); //production
 //データ側スプレッドシートIDはgetAppDataSpIdメソッドから取得に変更
-
-/** @enum{number} */
-//メインシートのカラム情報を記述
-
-const MAINSHEET_COLUMN = {
-  TRADER: 0,
-  START_DATE: 1,
-  DAYOFWEEK: 2,
-  WEATHER: 3,
-  REPORTER: 4,
-  TODAY_PLACE: 5,
-  TODAY_CONSTRUCTION_SCHEDULE: 6,
-  TODAY_WORKERS: 7,
-  NEXT_PLACE: 8,
-  NEXT_CONSTRUCTION_SCHEDULE: 9,
-  NEXT_WORKERS: 10,
-  MACHINE: 11,
-  SAFETY_INSTRUCTION: 12,
-  END_CONSTRUCTION: 15,
-  NEXT_SAFETY_NOTES: 13,
-  FOREMAN: 14,
-  USER_CHECK: 16,
-  ETC: 17,
-  USER_CHECK_CHECKBOX: 18,
-  ADMIN_CHECK_CHECKBOX: 19,
-};
-
-//ウェブアプリスプシの必要シート名称を列挙
-const SPREADSHEET_SHEETNAME = {
-  INSPECTION_DATA: 'insp',
-  MAIN: 'Main',
-  LOG: 'log',
-  CONFIG: 'config',
-  ADMIN: 'admin',
-};
 
 global.doGet = (e: GoogleAppsScript.Events.DoGet) => {
   const mode = e.parameter.mode;
@@ -61,10 +25,10 @@ global.doGet = (e: GoogleAppsScript.Events.DoGet) => {
  * @returns {*}
  */
 global.buildSelectOptions = function (
-  bucode: number,
+  bucode: number | string,
   defaultIndex: number = 1,
   datalistId: string = 'querylist',
-  defaultListSheetIndex = 1,
+  defaultListSheetIndex = 0,
   defaultReturnSheetIndex = 10,
   listSheetName = 'data'
 ) {
@@ -94,6 +58,7 @@ global.buildSelectOptions = function (
     }
   }
   html = html + `</datalist>`;
+  Logger.log(html);
   return html;
 };
 
@@ -109,14 +74,17 @@ global.getWordsFromList = (
   returnIndex: number,
   bucode: number | string
 ): string[] => {
+  const spId = appInit.spId; //production
   const sp = SpreadsheetApp.openById(spId);
   const sh = sp.getSheetByName(sheetName);
   const data = sh?.getDataRange().getDisplayValues();
+  Logger.log(spId);
   let filterData;
   if (data == undefined) {
     return ['nodata'];
   }
   if (bucode != '') {
+    Logger.log(bucode);
     filterData = data.filter((element) => {
       const condition = element[listIndex] == bucode;
       if (condition) {
@@ -133,5 +101,7 @@ global.getWordsFromList = (
     const element = filterData[i][returnIndex];
     memberJson.push(element);
   }
+
+  Logger.log(memberJson);
   return memberJson;
 };
