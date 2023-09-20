@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mb-3">
+  <div class="m-3">
     <div v-html="html" id="mrgn"></div>
     <label for="query">検索</label>
     <input
