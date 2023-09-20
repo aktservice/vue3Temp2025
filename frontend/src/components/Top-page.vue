@@ -1,23 +1,28 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <script setup lang="ts">
 import { onMounted } from 'vue';
+const html = '<?!=SHOPCODE ?>';
 
 onMounted(() => {
-  console.log('onload');
+  const bucode = document.querySelector('#mrgn')?.innerHTML;
+  if (bucode == undefined) {
+    console.log('err');
+    return;
+  }
   google.script.run
     .withSuccessHandler((ret) => {
-      console.log(ret);
       const list = document.getElementById('list');
       if (list != null) {
         list.innerHTML = ret;
       }
     })
-    .buildSelectOptions('1000403');
+    .buildSelectOptions(bucode);
 });
 </script>
 
 <template>
   <div class="mb-3">
+    <div v-html="html" id="mrgn"></div>
     <label for="query">検索</label>
     <input
       class="form-control form-control-lg"

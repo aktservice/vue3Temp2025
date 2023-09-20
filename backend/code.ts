@@ -6,14 +6,20 @@ global.doGet = (e: GoogleAppsScript.Events.DoGet) => {
   const bucodeString = e.parameter.bucode;
   const bucodeId = decodeURI(bucodeString);
 
-  let htmlTemp;
+  let htmlTemp: GoogleAppsScript.HTML.HtmlTemplate;
   if (mode == undefined) {
     htmlTemp = HtmlService.createTemplateFromFile('index');
+
+    htmlTemp.SHOPCODE = bucodeId;
   } else if (mode == 'admin') {
     //
+
+    htmlTemp = HtmlService.createTemplateFromFile('index');
+  } else {
+    htmlTemp = HtmlService.createTemplateFromFile('index');
   }
   //htmlTemp.QUERYLIST = buildSelectOptions(bucodeId);
-  return htmlTemp?.evaluate();
+  return htmlTemp.evaluate();
 };
 
 /**
@@ -30,7 +36,7 @@ global.buildSelectOptions = function (
   datalistId: string = 'querylist',
   defaultListSheetIndex = 0,
   defaultReturnSheetIndex = 10,
-  listSheetName = 'data'
+  listSheetName = 'query'
 ) {
   let html = `<datalist id="${datalistId}">`;
   const member = global.getWordsFromList(
@@ -58,7 +64,6 @@ global.buildSelectOptions = function (
     }
   }
   html = html + `</datalist>`;
-  Logger.log(html);
   return html;
 };
 
@@ -78,13 +83,11 @@ global.getWordsFromList = (
   const sp = SpreadsheetApp.openById(spId);
   const sh = sp.getSheetByName(sheetName);
   const data = sh?.getDataRange().getDisplayValues();
-  Logger.log(spId);
   let filterData;
   if (data == undefined) {
     return ['nodata'];
   }
   if (bucode != '') {
-    Logger.log(bucode);
     filterData = data.filter((element) => {
       const condition = element[listIndex] == bucode;
       if (condition) {
@@ -102,6 +105,5 @@ global.getWordsFromList = (
     memberJson.push(element);
   }
 
-  Logger.log(memberJson);
   return memberJson;
 };

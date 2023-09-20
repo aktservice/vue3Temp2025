@@ -4,9 +4,22 @@ declare namespace google {
    */
   namespace script {
     interface IRun {
-      echo(): void;
-      doGet(): void;
-      someFunction(msg: string, person: Person): void;
+      doGet(e: DoGet): void;
+      buildSelectOptions(
+        bucode: string | number,
+        defaultIndex?: number,
+        datalistId?: string,
+        defaultListSheetIndex?: number,
+        defaultReturnSheetIndex?: number,
+        listSheetName?: string
+      ): void;
+      getWordsFromList(
+        listIndex: number,
+        sheetName: string,
+        returnIndex: number,
+        bucode: string | number
+      ): void;
+      echo(message: string): void;
       /**
        * Sets a callback function to run if the server-side function throws an exception. Without a failure handler, failures are logged to the JavaScript console. To override this, call withFailureHandler(null) or supply a failure handler that does nothing.
        * @param callback a client-side callback function to run if the server-side function throws an exception; the Error object is passed to the function as the first argument, and the user object (if any) is passed as a second argument
@@ -24,10 +37,16 @@ declare namespace google {
       withUserObject(object: object): IRun;
     }
 
-    interface Person {
-      name: string;
-      age: number;
+    interface AppsScriptHttpRequestEvent {
+      parameter: {};
+      pathInfo: string;
+      contextPath: string;
+      contentLength: number;
+      queryString: string;
+      parameters: {};
     }
+
+    interface DoGet extends AppsScriptHttpRequestEvent {}
 
     interface IUrlLocation {
       /**
