@@ -19,6 +19,13 @@ declare namespace google {
         returnIndex: number,
         bucode: string | number
       ): void;
+      getMachineDataArray(
+        mgrn: string,
+        mgrnIndex: number,
+        bucode: string | number,
+        listIndex?: number,
+        sheetName?: string
+      ): void;
       echo(message: string): void;
       /**
        * Sets a callback function to run if the server-side function throws an exception. Without a failure handler, failures are logged to the JavaScript console. To override this, call withFailureHandler(null) or supply a failure handler that does nothing.

@@ -107,3 +107,40 @@ global.getWordsFromList = (
 
   return memberJson;
 };
+
+global.getMachineDataArray = (
+  mgrn: string,
+  mgrnIndex: number,
+  bucode: number | string,
+  listIndex: number = 2,
+  sheetName: string = 'query'
+): string[] => {
+  const spId = appInit.spId; //production
+  const sp = SpreadsheetApp.openById(spId);
+  const sh = sp.getSheetByName(sheetName);
+  const data = sh?.getDataRange().getDisplayValues();
+  let filterData;
+  if (data == undefined) {
+    return ['nodata'];
+  }
+  if (bucode != '') {
+    filterData = data.filter((element) => {
+      const condition = element[listIndex] == bucode;
+      if (condition) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  } else {
+    filterData = data;
+  }
+  for (let i = 0; i < filterData.length; i++) {
+    const element = filterData[i][mgrnIndex];
+    if (element === mgrn) {
+      return filterData[i];
+    }
+  }
+
+  return filterData[0];
+};
