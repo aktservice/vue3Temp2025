@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 const html = '<?!=SHOPCODE ?>';
 
 onMounted(() => {
@@ -30,7 +30,7 @@ const onChange = (event) => {
 
   google.script.run
     .withSuccessHandler((ret) => {
-      console.log(ret);
+      const returnArray = ref([]);
     })
     .getMachineDataArray(mgrn, 10, bucode);
 };
@@ -50,4 +50,5 @@ const onChange = (event) => {
     />
   </div>
   <div id="list"></div>
+  <li v-for="ret in returnArray">{{ ret }}</li>
 </template>

@@ -108,6 +108,15 @@ global.getWordsFromList = (
   return memberJson;
 };
 
+/**
+ * document
+ * @param mgrn
+ * @param mgrnIndex
+ * @param bucode
+ * @param listIndex
+ * @param sheetName
+ * @returns
+ */
 global.getMachineDataArray = (
   mgrn: string,
   mgrnIndex: number,
@@ -119,28 +128,16 @@ global.getMachineDataArray = (
   const sp = SpreadsheetApp.openById(spId);
   const sh = sp.getSheetByName(sheetName);
   const data = sh?.getDataRange().getDisplayValues();
-  let filterData;
   if (data == undefined) {
     return ['nodata'];
   }
-  if (bucode != '') {
-    filterData = data.filter((element) => {
-      const condition = element[listIndex] == bucode;
-      if (condition) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-  } else {
-    filterData = data;
-  }
-  for (let i = 0; i < filterData.length; i++) {
-    const element = filterData[i][mgrnIndex];
+
+  for (let i = 0; i < data.length; i++) {
+    const element = data[i][mgrnIndex];
     if (element === mgrn) {
-      return filterData[i];
+      return data[i];
     }
   }
 
-  return filterData[0];
+  return data[0];
 };
