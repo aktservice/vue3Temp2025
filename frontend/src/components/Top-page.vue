@@ -24,11 +24,15 @@ const onChange = (event) => {
   if (bucode == undefined) {
     return;
   }
+  const mgrn = event.target?.value;
+  console.log(mgrn);
+  console.log(bucode);
+
   google.script.run
     .withSuccessHandler((ret) => {
       console.log(ret);
     })
-    .getMachineDataArray(event?.target?.value, 10, bucode);
+    .getMachineDataArray(mgrn, 10, bucode);
 };
 </script>
 

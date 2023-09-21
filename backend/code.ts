@@ -112,7 +112,7 @@ global.getMachineDataArray = (
   mgrn: string,
   mgrnIndex: number,
   bucode: number | string,
-  listIndex: number = 2,
+  listIndex: number = 0,
   sheetName: string = 'query'
 ): string[] => {
   const spId = appInit.spId; //production
