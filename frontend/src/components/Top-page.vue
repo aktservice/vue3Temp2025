@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { Ref, onMounted, ref } from 'vue';
 const html = '<?!=SHOPCODE ?>';
 
 onMounted(() => {
@@ -19,7 +19,8 @@ onMounted(() => {
     .buildSelectOptions(bucode);
 });
 //see "https://zenn.dev/koduki/articles/0f8fcbc9a7485b"
-const onChange = (event) => {
+let returnArray: Ref<string[]> = ref([]);
+const onChange = (event: any) => {
   const bucode = document.querySelector('#bucode')?.innerHTML;
   if (bucode == undefined) {
     return;
@@ -29,8 +30,8 @@ const onChange = (event) => {
   console.log(bucode);
 
   google.script.run
-    .withSuccessHandler((ret) => {
-      const returnArray = ref([]);
+    .withSuccessHandler((ret: string[]) => {
+      returnArray.value = ret;
     })
     .getMachineDataArray(mgrn, 10, bucode);
 };
@@ -50,5 +51,5 @@ const onChange = (event) => {
     />
   </div>
   <div id="list"></div>
-  <li v-for="ret in returnArray">{{ ret }}</li>
+  <li v-for="(ret, index) in returnArray" v-bind:key="index">{{ ret }}</li>
 </template>
