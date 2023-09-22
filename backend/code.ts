@@ -141,3 +141,20 @@ global.getMachineDataArray = (
 
   return data[0];
 };
+
+global.getInspDataArray = (
+  mgrn: string,
+  mgrnIndex: number,
+  bucode: number | string,
+  sheetName: string = 'insp'
+): string[][] => {
+  const spId = appInit.spId; //production
+  const sp = SpreadsheetApp.openById(spId);
+  const sh = sp.getSheetByName(sheetName);
+  const data = sh?.getDataRange().getDisplayValues();
+  if (data == undefined) {
+    return [['nodata']];
+  }
+
+  return data;
+};

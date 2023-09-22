@@ -19,7 +19,7 @@ onMounted(() => {
     .buildSelectOptions(bucode);
 });
 //see "https://zenn.dev/koduki/articles/0f8fcbc9a7485b"
-let returnArray: Ref<string[]> = ref([]);
+let returnArray: Ref<string[][]> = ref([[]]);
 const onChange = (event: any) => {
   const bucode = document.querySelector('#bucode')?.innerHTML;
   if (bucode == undefined) {
@@ -30,12 +30,18 @@ const onChange = (event: any) => {
   console.log(bucode);
 
   google.script.run
-    .withSuccessHandler((ret: string[]) => {
+    .withSuccessHandler((ret: string[][]) => {
       returnArray.value = ret;
     })
-    .getMachineDataArray(mgrn, 10, bucode);
+    .getInspDataArray(mgrn, 10, bucode);
 };
 </script>
+<style>
+li {
+  display: inline-block;
+  list-style: none;
+}
+</style>
 
 <template>
   <div class="m-3">
@@ -51,5 +57,15 @@ const onChange = (event: any) => {
     />
   </div>
   <div id="list"></div>
-  <li v-for="(ret, index) in returnArray" v-bind:key="index">{{ ret }}</li>
+  <ul class="list-group list-group-horizontal">
+    <div v-for="(ret, index) in returnArray" v-bind:key="index">
+      <li
+        class="list-group-item"
+        v-for="(result, index) in ret"
+        v-bind:key="index"
+      >
+        {{ result }}
+      </li>
+    </div>
+  </ul>
 </template>
