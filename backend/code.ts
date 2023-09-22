@@ -147,7 +147,7 @@ global.getInspDataArray = (
   mgrnIndex: number,
   bucode: number | string,
   sheetName: string = 'insp'
-): string[][] => {
+): any[] => {
   const spId = appInit.spId; //production
   const sp = SpreadsheetApp.openById(spId);
   const sh = sp.getSheetByName(sheetName);
@@ -155,6 +155,13 @@ global.getInspDataArray = (
   if (data == undefined) {
     return [['nodata']];
   }
-
-  return data;
+  let returnJson = [];
+  let returnObj: { title: string; data: string[] | undefined };
+  data.map((element) => {
+    const titleString = element[0];
+    const dataArray = element.slice(1);
+    returnObj = { title: titleString, data: dataArray };
+    returnJson.push(returnObj);
+  });
+  return returnJson;
 };
