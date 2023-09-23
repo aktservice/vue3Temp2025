@@ -39,14 +39,13 @@ const onChange = (event: any) => {
 };
 </script>
 <style>
-li {
-  display: inline-block;
-  list-style: none;
+input[type='checkbox'] {
+  transform: scale(1.5);
 }
 </style>
 
 <template>
-  <div class="m-3">
+  <div class="m-5">
     <div v-html="html" id="bucode"></div>
     <label for="query">検索</label>
     <input
@@ -57,12 +56,31 @@ li {
       list="querylist"
       @change="onChange"
     />
+    <div id="list"></div>
   </div>
-  <div id="list"></div>
   <template v-for="(ret, index) in returnArray" v-bind:key="index">
-    <details>
-      <summary>{{ ret.title }}</summary>
-      <li v-for="(l, index2) in ret.data" v-bind:key="index2">{{ l }}</li>
+    <div class="form-check">
+      <label class="fs-3" v-bind:for="'titlecheckbox' + index">{{
+        ret.title
+      }}</label>
+      <input
+        class="form-check-input m-3"
+        type="checkbox"
+        v-bind:value="ret.title"
+        v-bind:id="'titlecheckbox' + index"
+      />
+    </div>
+    <details class="m-3 fs-3">
+      <summary>{{ ret.title }}:詳細</summary>
+      <ul class="list-group">
+        <li
+          class="list-group-item m-3"
+          v-for="(l, index2) in ret.data"
+          v-bind:key="index2"
+        >
+          {{ l }}
+        </li>
+      </ul>
     </details>
   </template>
 </template>
