@@ -141,7 +141,12 @@ global.getMachineDataArray = (
 
   return data[0];
 };
-
+const INSPSHEETCOLUMN = {
+  ID: 0,
+  MJCLASS: 1,
+  CONTENTS: 2,
+  CONFIRM: 3,
+};
 global.getInspDataArray = (
   mgrn: string,
   mgrnIndex: number,
@@ -155,12 +160,28 @@ global.getInspDataArray = (
   if (data == undefined) {
     return [['nodata']];
   }
-  let returnJson = [];
+  //data はあとでフィルター処理して単一機種コードのデータに変更
+  let returnJson: object[] = [];
   let returnObj: { title: string; data: string[] | undefined };
-  data.map((element) => {
-    const titleString = element[0];
-    const dataArray = element.slice(1);
-    returnObj = { title: titleString, data: dataArray };
+  const titleArray = new Set<string>();
+  const kish = new Set<string>();
+  for (let i = 0; i < data.length; i++) {
+    const element = data[i][INSPSHEETCOLUMN.MJCLASS];
+    titleArray.add(element);
+  }
+  titleArray.forEach((element) => {
+    const dataArray: string[] = [];
+    data.forEach((elementArray) => {
+      if (elementArray[INSPSHEETCOLUMN.MJCLASS] === element) {
+        dataArray.push(
+          `${elementArray[INSPSHEETCOLUMN.CONTENTS]}:【${
+            elementArray[INSPSHEETCOLUMN.CONFIRM]
+          }】`
+        );
+      }
+    });
+    returnObj = { title: element, data: dataArray };
+
     returnJson.push(returnObj);
   });
   return returnJson;
