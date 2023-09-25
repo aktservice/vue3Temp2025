@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <script setup lang="ts">
 import { Ref, onMounted, ref } from 'vue';
+import qrcomponent from './Qr-Component.vue';
 const html = '<?!=SHOPCODE ?>';
 
 onMounted(() => {
@@ -45,6 +46,7 @@ input[type='checkbox'] {
 </style>
 
 <template>
+  <qrcomponent></qrcomponent>
   <div class="m-5">
     <div v-html="html" id="bucode"></div>
     <label for="query">検索</label>

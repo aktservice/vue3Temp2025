@@ -17,5 +17,8 @@
     "push": "clasp push",
     "open": "clasp open --webapp",
     "gen-dts": "yarn workspace backend run gen-dts"
+  },
+  "dependencies": {
+    "vue-qrcode-reader": "^5.3.6"
   }
 }
