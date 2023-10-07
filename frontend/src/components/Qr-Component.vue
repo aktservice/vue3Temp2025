@@ -1,6 +1,20 @@
 <script setup lang="ts">
 import jsQR from 'jsqr';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+
+interface sendEmits {
+  (e: 'sendData', value: string): void;
+}
+const emits = defineEmits<sendEmits>();
+const changeData = (event) => {
+  console.log(event);
+};
+
+const refData = ref('Unable to access video stream.');
+//onMounted部分を関数化してボタン起動できるようにする
+//startTick関数から戻りでSTPが帰ってきたら停止するようにする
+//Emitをつかって親へ値を返す
+//親側はその値を検索窓へ
 onMounted((e) => {
   let video = document.createElement('video');
   let canvas: HTMLCanvasElement = document.getElementById('canvas');
@@ -27,7 +41,8 @@ onMounted((e) => {
       });
       if (code) {
         drawRect(code.location); // Rect
-        msg.innerText = code.data; // Data
+        refData.value = code.data; // Data
+        return;
       } else {
         msg.innerText = 'Detecting QR-Code...';
       }
@@ -75,7 +90,7 @@ onMounted((e) => {
 <template>
   <h1>jsQR</h1>
   <div id="wrapper">
-    <div id="msg">Unable to access video stream.</div>
+    <div id="msg" @change="changeData">{{ refData }}</div>
     <canvas id="canvas"></canvas>
   </div>
 </template>

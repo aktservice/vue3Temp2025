@@ -38,6 +38,15 @@ const onChange = (event: any) => {
     })
     .getInspDataArray(mgrn, 10, bucode);
 };
+const isShow = ref(true);
+const videoShow = () => {
+  console.log(isShow.value);
+  if (isShow.value) {
+    return (isShow.value = false);
+  } else {
+    return (isShow.value = true);
+  }
+};
 </script>
 <style>
 input[type='checkbox'] {
@@ -46,7 +55,15 @@ input[type='checkbox'] {
 </style>
 
 <template>
-  <qrcomponent></qrcomponent>
+  <div class="d-grid gap-2 m-5">
+    <button class="btn btn-primary" v-on:click="videoShow">
+      QR読み込み中止
+    </button>
+  </div>
+  <div v-if="isShow">
+    <qrcomponent></qrcomponent>
+  </div>
+
   <div class="m-5">
     <div v-html="html" id="bucode"></div>
     <label for="query">検索</label>
