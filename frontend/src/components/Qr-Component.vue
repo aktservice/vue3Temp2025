@@ -1,24 +1,27 @@
 <script setup lang="ts">
-import jsQR from 'jsqr';
-import { onMounted, ref } from 'vue';
+import { onMounted, onUpdated, ref, watch } from 'vue';
 
 interface sendEmits {
-  (e: 'sendData', value: string): void;
+  (event: 'sendData', value: string): void;
 }
 const emits = defineEmits<sendEmits>();
-const changeData = (event) => {
-  console.log(event);
+const changeData = (val: string) => {
+  emits('sendData', val);
 };
 
 const refData = ref('Unable to access video stream.');
+watch(refData, () => {
+  changeData(refData.value);
+});
+
 //onMounted部分を関数化してボタン起動できるようにする
 //startTick関数から戻りでSTPが帰ってきたら停止するようにする
 //Emitをつかって親へ値を返す
 //親側はその値を検索窓へ
-onMounted((e) => {
+const stQr = (e: Event) => {
   let video = document.createElement('video');
-  let canvas: HTMLCanvasElement = document.getElementById('canvas');
-  let ctx = canvas?.getContext('2d');
+  let canvas = document.getElementById('canvas') as HTMLCanvasElement;
+  let ctx = canvas.getContext('2d');
   let msg = document.getElementById('msg');
 
   const userMedia = { video: { facingMode: 'environment' } };
@@ -26,7 +29,12 @@ onMounted((e) => {
     video.srcObject = stream;
     video.setAttribute('playsinline', true);
     video.play();
-    startTick();
+    const tick = startTick();
+    if (tick == 'stp') {
+      stream.getTracks().forEach((element) => {
+        //element.stop();
+      });
+    }
   });
 
   function startTick() {
@@ -42,7 +50,7 @@ onMounted((e) => {
       if (code) {
         drawRect(code.location); // Rect
         refData.value = code.data; // Data
-        return;
+        return 'stp';
       } else {
         msg.innerText = 'Detecting QR-Code...';
       }
@@ -65,7 +73,7 @@ onMounted((e) => {
     ctx.lineTo(end.x, end.y);
     ctx.stroke();
   }
-});
+};
 </script>
 <style>
 #wrapper {
@@ -88,9 +96,12 @@ onMounted((e) => {
 }
 </style>
 <template>
+  <div class="d-grid gap-2 m-5">
+    <button class="btn btn-primary" @click="stQr">QRコードリーダー起動</button>
+  </div>
   <h1>jsQR</h1>
   <div id="wrapper">
-    <div id="msg" @change="changeData">{{ refData }}</div>
+    <div id="msg">{{ refData }}</div>
     <canvas id="canvas"></canvas>
   </div>
 </template>

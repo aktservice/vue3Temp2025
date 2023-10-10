@@ -2,14 +2,21 @@
 <script setup lang="ts">
 import { Ref, onMounted, ref } from 'vue';
 import qrcomponent from './Qr-Component.vue';
+//init時にテンプレート処理
+//see https://developers.google.com/apps-script/guides/html/templates?hl=ja
 const html = '<?!=SHOPCODE ?>';
-
+//検索BOXのRef
+const mgrn = ref('');
+//マウント時に処理
 onMounted(() => {
+  //部門コードがない場合は一旦リターン
   const bucode = document.querySelector('#bucode')?.innerHTML;
   if (bucode == undefined) {
     console.log('err');
     return;
   }
+
+  //サーバー側からHTMLでリストが来るためVHTMLへHTMLセットで処理
   google.script.run
     .withSuccessHandler((ret) => {
       const list = document.getElementById('list');
@@ -23,14 +30,17 @@ onMounted(() => {
 let returnArray: Ref<[{ title: string; data: string[] }]> = ref([
   { title: '', data: [] },
 ]);
+//QRコードをセットする関数
+const setQrData = (data) => {
+  mgrn.value = data;
+};
+//bucodeの変更時処理
 const onChange = (event: any) => {
   const bucode = document.querySelector('#bucode')?.innerHTML;
   if (bucode == undefined) {
     return;
   }
   const mgrn = event.target?.value;
-  console.log(mgrn);
-  console.log(bucode);
 
   google.script.run
     .withSuccessHandler((ret: [{ title: string; data: string[] }]) => {
@@ -38,6 +48,7 @@ const onChange = (event: any) => {
     })
     .getInspDataArray(mgrn, 10, bucode);
 };
+//QRコード読み込み部分を隠す処理用
 const isShow = ref(true);
 const videoShow = () => {
   console.log(isShow.value);
@@ -61,7 +72,7 @@ input[type='checkbox'] {
     </button>
   </div>
   <div v-if="isShow">
-    <qrcomponent></qrcomponent>
+    <qrcomponent @sendData="setQrData"></qrcomponent>
   </div>
 
   <div class="m-5">
@@ -74,6 +85,7 @@ input[type='checkbox'] {
       name="for_admin"
       list="querylist"
       @change="onChange"
+      :value="mgrn"
     />
     <div id="list"></div>
   </div>
