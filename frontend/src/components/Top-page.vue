@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import { Ref, onMounted, ref } from 'vue';
 import qrcomponent from './Qr-Component.vue';
+import nyuko from './NyukoButton.vue';
 //init時にテンプレート処理
 //see https://developers.google.com/apps-script/guides/html/templates?hl=ja
 const html = '<?!=SHOPCODE ?>';
@@ -28,7 +29,7 @@ onMounted(() => {
 });
 //see "https://zenn.dev/koduki/articles/0f8fcbc9a7485b"
 let returnArray: Ref<[{ title: string; data: string[] }]> = ref([
-  { title: '', data: [] },
+  { title: 'test', data: ['indata', 'outdata'] },
 ]);
 //QRコードをセットする関数
 const setQrData = (data) => {
@@ -67,7 +68,7 @@ input[type='checkbox'] {
 
 <template>
   <div class="d-grid gap-2 m-5">
-    <button class="btn btn-primary" v-on:click="videoShow">
+    <button class="btn btn-warning" v-on:click="videoShow">
       QR読み込み中止
     </button>
   </div>
@@ -90,7 +91,7 @@ input[type='checkbox'] {
     <div id="list"></div>
   </div>
   <template v-for="(ret, index) in returnArray" v-bind:key="index">
-    <div class="form-check">
+    <div class="form-check d-grid">
       <label class="fs-3" v-bind:for="'titlecheckbox' + index">{{
         ret.title
       }}</label>
@@ -114,4 +115,22 @@ input[type='checkbox'] {
       </ul>
     </details>
   </template>
+  <nyuko
+    buttonName="軽整備"
+    :mgrn="mgrn"
+    setValue="軽整備"
+    btnClass="btn btn-success"
+  ></nyuko>
+  <nyuko
+    buttonName="中整備"
+    :mgrn="mgrn"
+    setValue="中整備"
+    btnClass="btn btn-info"
+  ></nyuko>
+  <nyuko
+    buttonName="重整備"
+    :mgrn="mgrn"
+    setValue="重整備"
+    btnClass="btn btn-danger"
+  ></nyuko>
 </template>

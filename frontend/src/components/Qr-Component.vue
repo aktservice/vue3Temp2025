@@ -14,10 +14,6 @@ watch(refData, () => {
   changeData(refData.value);
 });
 
-//onMounted部分を関数化してボタン起動できるようにする
-//startTick関数から戻りでSTPが帰ってきたら停止するようにする
-//Emitをつかって親へ値を返す
-//親側はその値を検索窓へ
 const stQr = (e: Event) => {
   let video = document.createElement('video');
   let canvas = document.getElementById('canvas') as HTMLCanvasElement;

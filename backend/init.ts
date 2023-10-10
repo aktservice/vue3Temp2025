@@ -9,6 +9,7 @@ export class appInit {
   static sp = SpreadsheetApp.getActiveSpreadsheet();
   static spId = this.sp.getId();
   static SETTINGSHEETINFO = {
+    DOSHEETNAME: 'do',
     SHEETNAME: 'setting',
     SETTINGINFOAREA: 'A:E',
     SETTINGINFOCOLUMN: 2,
