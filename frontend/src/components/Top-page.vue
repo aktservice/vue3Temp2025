@@ -29,7 +29,7 @@ onMounted(() => {
 });
 //see "https://zenn.dev/koduki/articles/0f8fcbc9a7485b"
 let returnArray: Ref<[{ title: string; data: string[] }]> = ref([
-  { title: 'test', data: ['indata', 'outdata'] },
+  { title: '修理データ', data: ['詳細データ①', '詳細データ②'] },
 ]);
 //QRコードをセットする関数
 const setQrData = (data) => {
@@ -37,17 +37,26 @@ const setQrData = (data) => {
 };
 //bucodeの変更時処理
 const onChange = (event: any) => {
-  const bucode = document.querySelector('#bucode')?.innerHTML;
-  if (bucode == undefined) {
+  const inMgrn = event.target?.value;
+  console.log(inMgrn);
+  if (inMgrn == undefined || inMgrn == '') {
+    console.log('undefined');
     return;
   }
-  const mgrn = event.target?.value;
+
+  mgrn.value = inMgrn;
+  const bucode = document.querySelector('#bucode')?.innerHTML;
+  if (bucode == undefined) {
+    console.log('err');
+    return;
+  }
+  //const mgrn = event.target?.value;
 
   google.script.run
     .withSuccessHandler((ret: [{ title: string; data: string[] }]) => {
       returnArray.value = ret;
     })
-    .getInspDataArray(mgrn, 10, bucode);
+    .getInspDataArray(inMgrn, 10, bucode);
 };
 //QRコード読み込み部分を隠す処理用
 const isShow = ref(true);
@@ -90,6 +99,24 @@ input[type='checkbox'] {
     />
     <div id="list"></div>
   </div>
+  <nyuko
+    buttonName="軽整備"
+    :mgrn="mgrn"
+    setValue="軽整備"
+    btnClass="btn btn-success"
+  ></nyuko>
+  <nyuko
+    buttonName="中整備"
+    :mgrn="mgrn"
+    setValue="中整備"
+    btnClass="btn btn-info"
+  ></nyuko>
+  <nyuko
+    buttonName="重整備"
+    :mgrn="mgrn"
+    setValue="重整備"
+    btnClass="btn btn-danger"
+  ></nyuko>
   <template v-for="(ret, index) in returnArray" v-bind:key="index">
     <div class="form-check d-grid">
       <label class="fs-3" v-bind:for="'titlecheckbox' + index">{{
@@ -116,21 +143,9 @@ input[type='checkbox'] {
     </details>
   </template>
   <nyuko
-    buttonName="軽整備"
+    buttonName="入庫点検完了"
     :mgrn="mgrn"
-    setValue="軽整備"
-    btnClass="btn btn-success"
-  ></nyuko>
-  <nyuko
-    buttonName="中整備"
-    :mgrn="mgrn"
-    setValue="中整備"
-    btnClass="btn btn-info"
-  ></nyuko>
-  <nyuko
-    buttonName="重整備"
-    :mgrn="mgrn"
-    setValue="重整備"
-    btnClass="btn btn-danger"
+    setValue="完了"
+    btnClass="btn btn-primary"
   ></nyuko>
 </template>

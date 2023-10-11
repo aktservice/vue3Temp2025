@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUpdated, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 interface sendEmits {
   (event: 'sendData', value: string): void;

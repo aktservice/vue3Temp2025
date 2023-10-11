@@ -6,8 +6,10 @@ const props = defineProps<{
   btnClass: string;
 }>();
 const btnClick = () => {
-  const todayDate = new Date();
+  console.log('btnOn');
+  const todayDate = '今日の日付'; //new Date();
   const setDataArray = [todayDate, props.mgrn, props.setValue];
+  console.log(setDataArray);
   google.script.run
     .withSuccessHandler(() => {
       //ここに成功時の処理
@@ -18,7 +20,7 @@ const btnClick = () => {
 </script>
 <template>
   <div class="d-grid gap-2 m-5">
-    <button :class="btnClass" :value="setValue" @click="btnClick">
+    <button :val="mgrn" :class="btnClass" :value="setValue" @click="btnClick">
       {{ buttonName }}
     </button>
   </div>
