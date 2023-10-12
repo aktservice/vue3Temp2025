@@ -21,6 +21,12 @@ global.doGet = (e: GoogleAppsScript.Events.DoGet) => {
   //htmlTemp.QUERYLIST = buildSelectOptions(bucodeId);
   return htmlTemp.evaluate();
 };
+global.setData = (dataArray: string[]) => {
+  const spId = appInit.spId; //production
+  const sp = SpreadsheetApp.openById(spId);
+  const sh = sp.getSheetByName(appInit.SETTINGSHEETINFO.DOSHEETNAME);
+  sh?.appendRow(dataArray);
+};
 
 /**
  * @description inputBoxへdatalistをセットする
