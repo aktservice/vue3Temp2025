@@ -106,15 +106,15 @@ input[type='checkbox'] {
     btnClass="btn btn-success"
   ></nyuko>
   <nyuko
-    buttonName="中整備"
+    buttonName="中修理"
     :mgrn="mgrn"
-    setValue="中整備"
+    setValue="中修理"
     btnClass="btn btn-info"
   ></nyuko>
   <nyuko
-    buttonName="重整備"
+    buttonName="重修理"
     :mgrn="mgrn"
-    setValue="重整備"
+    setValue="重修理"
     btnClass="btn btn-danger"
   ></nyuko>
   <template v-for="(ret, index) in returnArray" v-bind:key="index">
