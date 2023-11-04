@@ -3,11 +3,15 @@
 import { Ref, onMounted, ref } from 'vue';
 import qrcomponent from './Qr-Component.vue';
 import nyuko from './NyukoButton.vue';
+import opsh from './Op-Sheet.vue';
 //init時にテンプレート処理
 //see https://developers.google.com/apps-script/guides/html/templates?hl=ja
 const html = '<?!=SHOPCODE ?>';
 //検索BOXのRef
 const mgrn = ref('');
+let bucodeRef = ref('bucode');
+
+const listCheck = ref([]);
 //マウント時に処理
 onMounted(() => {
   //部門コードがない場合は一旦リターン
@@ -16,7 +20,7 @@ onMounted(() => {
     console.log('err');
     return;
   }
-
+  bucodeRef.value = bucode;
   //サーバー側からHTMLでリストが来るためVHTMLへHTMLセットで処理
   google.script.run
     .withSuccessHandler((ret) => {
@@ -36,6 +40,22 @@ const setQrData = (data) => {
   mgrn.value = data;
 };
 //bucodeの変更時処理
+const bucodeChange = (e) => {
+  const bucode = e.target?.value;
+  if (bucode == undefined || bucode == '') {
+    console.log('undefined');
+    return;
+  }
+  google.script.run
+    .withSuccessHandler((ret) => {
+      const list = document.getElementById('list');
+      if (list != null) {
+        list.innerHTML = ret;
+      }
+    })
+    .buildSelectOptions(bucode);
+};
+//mgrn変更時の処理
 const onChange = (event: any) => {
   const inMgrn = event.target?.value;
   console.log(inMgrn);
@@ -87,16 +107,28 @@ input[type='checkbox'] {
 
   <div class="m-5">
     <div v-html="html" id="bucode"></div>
-    <label for="query">検索</label>
-    <input
-      class="form-control form-control-lg"
-      type="text"
-      id="inputmgrn"
-      name="for_admin"
-      list="querylist"
-      @change="onChange"
-      :value="mgrn"
-    />
+    <div class="input-group input-group-lg">
+      <span class="input-group-text">検索</span>
+      <input
+        type="text"
+        class="form-control"
+        id="inputmgrn"
+        name="for_admin"
+        list="querylist"
+        @change="onChange"
+        :value="mgrn"
+      />
+      <span class="input-group-text">部門コード</span>
+      <input
+        type="text"
+        class="form-control"
+        id="bucoderef"
+        name="for_admin"
+        list="bucodelist"
+        @change="bucodeChange"
+        :value="bucodeRef"
+      />
+    </div>
     <div id="list"></div>
   </div>
   <nyuko
@@ -108,36 +140,51 @@ input[type='checkbox'] {
   <nyuko
     buttonName="中修理"
     :mgrn="mgrn"
-    setValue="中修理"
+    setValue="中整備"
     btnClass="btn btn-info"
   ></nyuko>
   <nyuko
     buttonName="重修理"
     :mgrn="mgrn"
-    setValue="重修理"
+    setValue="重整備"
     btnClass="btn btn-danger"
   ></nyuko>
+  <opsh></opsh>
   <template v-for="(ret, index) in returnArray" v-bind:key="index">
     <div class="form-check d-grid">
       <label class="fs-3" v-bind:for="'titlecheckbox' + index">{{
         ret.title
       }}</label>
+      <!--
       <input
         class="form-check-input m-3"
         type="checkbox"
         v-bind:value="ret.title"
         v-bind:id="'titlecheckbox' + index"
       />
+-->
     </div>
     <details class="m-3 fs-3">
-      <summary>{{ ret.title }}:詳細</summary>
+      <summary>{{ ret.title }}:詳細(不良時にチェックして下さい)</summary>
       <ul class="list-group">
         <li
           class="list-group-item m-3"
-          v-for="(l, index2) in ret.data"
+          v-for="(cont, index2) in ret.data"
           v-bind:key="index2"
         >
-          {{ l }}
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="list-group-item m-3 form-check-input"
+              name="checklist"
+              v-bind:id="'cont' + index2"
+              v-bind:value="cont"
+              v-model="listCheck"
+            />
+            <label class="form-check-label" v-bind:for="'cont' + index2">{{
+              cont
+            }}</label>
+          </div>
         </li>
       </ul>
     </details>
@@ -147,5 +194,6 @@ input[type='checkbox'] {
     :mgrn="mgrn"
     setValue="完了"
     btnClass="btn btn-primary"
+    v-bind:set-insp-data="listCheck"
   ></nyuko>
 </template>

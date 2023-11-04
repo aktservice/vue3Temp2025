@@ -95,7 +95,6 @@ const stQr = (e: Event) => {
   <div class="d-grid gap-2 m-5">
     <button class="btn btn-primary" @click="stQr">QRコードリーダー起動</button>
   </div>
-  <h1>jsQR</h1>
   <div id="wrapper">
     <div id="msg">{{ refData }}</div>
     <canvas id="canvas"></canvas>

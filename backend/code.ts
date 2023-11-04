@@ -5,7 +5,7 @@ global.doGet = (e: GoogleAppsScript.Events.DoGet) => {
   const mode = e.parameter.mode;
   const bucodeString = e.parameter.bucode;
   const bucodeId = decodeURI(bucodeString);
-
+  //bucodeIdを部門コードかどうかを判定する部分を作成予定
   let htmlTemp: GoogleAppsScript.HTML.HtmlTemplate;
   if (mode == undefined) {
     htmlTemp = HtmlService.createTemplateFromFile('index');

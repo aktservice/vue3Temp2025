@@ -6,12 +6,19 @@ const props = defineProps<{
   setValue: string;
   mgrn: string;
   btnClass: string;
+  setInspData?: string[];
 }>();
 const btnClick = () => {
   console.log('btnOn');
   isSpinnerShow.value = true;
   const todayDate = new Date().toString();
-  const setDataArray = [todayDate, props.mgrn, props.setValue];
+  let setInsp;
+  if (props.setInspData == undefined) {
+    setInsp = 'nodata';
+  } else {
+    setInsp = props.setInspData.join(':');
+  }
+  const setDataArray = [todayDate, props.mgrn, props.setValue, setInsp];
   console.log(setDataArray);
   google.script.run
     .withSuccessHandler(() => {
