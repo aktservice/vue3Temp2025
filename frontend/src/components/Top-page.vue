@@ -106,7 +106,7 @@ input[type='checkbox'] {
   </div>
 
   <div class="m-5">
-    <div v-html="html" id="bucode"></div>
+    <div hidden="true" v-html="html" id="bucode"></div>
     <div class="input-group input-group-lg">
       <span class="input-group-text">検索</span>
       <input
