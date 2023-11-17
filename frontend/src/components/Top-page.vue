@@ -12,6 +12,10 @@ const mgrn = ref('');
 let bucodeRef = ref('bucode');
 
 const listCheck = ref([]);
+const hour = ref(0);
+const mileage = ref(0);
+const paid = ref('選択して下さい');
+const cost = ref(0);
 //マウント時に処理
 onMounted(() => {
   //部門コードがない場合は一旦リターン
@@ -35,6 +39,7 @@ onMounted(() => {
 let returnArray: Ref<[{ title: string; data: string[] }]> = ref([
   { title: '修理データ', data: ['詳細データ①', '詳細データ②'] },
 ]);
+
 //QRコードをセットする関数
 const setQrData = (data) => {
   mgrn.value = data;
@@ -129,6 +134,43 @@ input[type='checkbox'] {
         :value="bucodeRef"
       />
     </div>
+    <div class="input-group input-group-lg">
+      <span class="input-group-text">hour</span>
+      <input
+        type="text"
+        class="form-control"
+        name="opsheet"
+        id="opsheet-hour"
+        v-model="hour"
+      />
+      <span class="input-group-text">距離</span>
+      <input
+        type="text"
+        class="form-control"
+        name="opsheet"
+        id="opsheet-mileage"
+        v-model="mileage"
+      />
+      <span class="input-group-text">請求</span>
+      <select
+        class="form-control"
+        name="opsheet"
+        id="opsheet-paid"
+        v-model="paid"
+      >
+        <option value="">選択して下さい</option>
+        <option value="有償">有償</option>
+        <option value="無償">無償</option>
+      </select>
+      <span class="input-group-text">金額</span>
+      <input
+        type="text"
+        class="form-control"
+        name="opsheet"
+        id="opsheet-cost"
+        v-model="cost"
+      />
+    </div>
     <div id="list"></div>
   </div>
   <nyuko
@@ -136,20 +178,22 @@ input[type='checkbox'] {
     :mgrn="mgrn"
     setValue="軽整備"
     btnClass="btn btn-success"
+    :set-insp-data="[hour, mileage, paid, cost, listCheck.join()]"
   ></nyuko>
   <nyuko
     buttonName="中修理"
     :mgrn="mgrn"
     setValue="中整備"
     btnClass="btn btn-info"
+    :set-insp-data="inspData"
   ></nyuko>
   <nyuko
     buttonName="重修理"
     :mgrn="mgrn"
     setValue="重整備"
     btnClass="btn btn-danger"
+    :set-insp-data="inspData"
   ></nyuko>
-  <opsh></opsh>
   <template v-for="(ret, index) in returnArray" v-bind:key="index">
     <div class="form-check d-grid">
       <label class="fs-3" v-bind:for="'titlecheckbox' + index">{{
@@ -194,6 +238,6 @@ input[type='checkbox'] {
     :mgrn="mgrn"
     setValue="完了"
     btnClass="btn btn-primary"
-    v-bind:set-insp-data="listCheck"
+    v-bind:set-insp-data="inspData"
   ></nyuko>
 </template>

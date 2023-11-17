@@ -10,6 +10,8 @@ const props = defineProps<{
 }>();
 const btnClick = () => {
   console.log('btnOn');
+  console.log(props.setInspData);
+
   isSpinnerShow.value = true;
   const todayDate = new Date().toString();
   let setInsp;
