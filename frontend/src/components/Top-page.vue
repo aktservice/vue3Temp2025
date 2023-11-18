@@ -1,16 +1,15 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <script setup lang="ts">
-import { Ref, onMounted, ref } from 'vue';
+import { Ref, onMounted, ref, computed } from 'vue';
 import qrcomponent from './Qr-Component.vue';
 import nyuko from './NyukoButton.vue';
-import opsh from './Op-Sheet.vue';
 //init時にテンプレート処理
 //see https://developers.google.com/apps-script/guides/html/templates?hl=ja
 const html = '<?!=SHOPCODE ?>';
 //検索BOXのRef
 const mgrn = ref('');
 let bucodeRef = ref('bucode');
-
+// ここから送信データ
 const listCheck = ref([]);
 const hour = ref(0);
 const mileage = ref(0);
@@ -39,6 +38,18 @@ onMounted(() => {
 let returnArray: Ref<[{ title: string; data: string[] }]> = ref([
   { title: '修理データ', data: ['詳細データ①', '詳細データ②'] },
 ]);
+
+//修理データ用
+const inspData = computed(() => {
+  return [
+    bucodeRef.value,
+    hour.value,
+    mileage.value,
+    paid.value,
+    cost.value,
+    listCheck.value.join(),
+  ];
+});
 
 //QRコードをセットする関数
 const setQrData = (data) => {
@@ -178,19 +189,19 @@ input[type='checkbox'] {
     :mgrn="mgrn"
     setValue="軽整備"
     btnClass="btn btn-success"
-    :set-insp-data="[hour, mileage, paid, cost, listCheck.join()]"
+    :set-insp-data="inspData"
   ></nyuko>
   <nyuko
     buttonName="中修理"
     :mgrn="mgrn"
-    setValue="中整備"
+    setValue="中修理"
     btnClass="btn btn-info"
     :set-insp-data="inspData"
   ></nyuko>
   <nyuko
     buttonName="重修理"
     :mgrn="mgrn"
-    setValue="重整備"
+    setValue="重修理"
     btnClass="btn btn-danger"
     :set-insp-data="inspData"
   ></nyuko>

@@ -6,7 +6,7 @@ const props = defineProps<{
   setValue: string;
   mgrn: string;
   btnClass: string;
-  setInspData?: string[];
+  setInspData?: (string | number)[];
 }>();
 const btnClick = () => {
   console.log('btnOn');
@@ -18,9 +18,10 @@ const btnClick = () => {
   if (props.setInspData == undefined) {
     setInsp = 'nodata';
   } else {
-    setInsp = props.setInspData.join(':');
+    //setInsp = props.setInspData.join(':');
+    setInsp = props.setInspData;
   }
-  const setDataArray = [todayDate, props.mgrn, props.setValue, setInsp];
+  const setDataArray = [todayDate, props.mgrn, props.setValue].concat(setInsp);
   console.log(setDataArray);
   google.script.run
     .withSuccessHandler(() => {
