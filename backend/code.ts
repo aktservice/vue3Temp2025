@@ -22,6 +22,8 @@ global.doGet = (e: GoogleAppsScript.Events.DoGet) => {
   return htmlTemp.evaluate();
 };
 global.setData = (dataArray: string[]) => {
+  const user = Session.getActiveUser().getEmail();
+  dataArray.splice(1, 0, user);
   const spId = appInit.spId; //production
   const sp = SpreadsheetApp.openById(spId);
   const sh = sp.getSheetByName(appInit.SETTINGSHEETINFO.DOSHEETNAME);
