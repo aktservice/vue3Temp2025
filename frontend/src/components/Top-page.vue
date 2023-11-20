@@ -62,6 +62,12 @@ const bucodeChange = (e) => {
     console.log('undefined');
     return;
   }
+
+  const idElement = document.querySelector('#bucode');
+  if (idElement !== null) {
+    idElement.innerHTML = bucode;
+    bucodeRef.value = bucode;
+  }
   google.script.run
     .withSuccessHandler((ret) => {
       const list = document.getElementById('list');
