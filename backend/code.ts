@@ -173,7 +173,7 @@ global.getInspDataArray = (
   let returnObj: { title: string; data: string[] | undefined };
   const titleArray = new Set<string>();
   const kish = new Set<string>();
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 1; i < data.length; i++) {
     const element = data[i][INSPSHEETCOLUMN.MJCLASS];
     titleArray.add(element);
   }
