@@ -81,7 +81,8 @@ const onChange = (event: any) => {
   }
 
   mgrn.value = inMgrn;
-  const bucode = document.querySelector('#bucode')?.innerHTML;
+  const bucode = bucodeRef.value;
+  console.log(bucode);
   if (bucode == undefined) {
     console.log('err');
     return;
