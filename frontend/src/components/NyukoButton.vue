@@ -6,36 +6,34 @@ const props = defineProps<{
   setValue: string;
   mgrn: string;
   btnClass: string;
-  setInspData?: (string | number)[];
 }>();
+const status = ref('stop');
 const btnClick = () => {
-  console.log('btnOn');
-  console.log(props.setInspData);
+  status.value = 'move';
 
   isSpinnerShow.value = true;
   const todayDate = new Date().toString();
-  let setInsp;
-  if (props.setInspData == undefined) {
-    setInsp = 'nodata';
-  } else {
-    //setInsp = props.setInspData.join(':');
-    setInsp = props.setInspData;
-  }
-  const setDataArray = [todayDate, props.mgrn, props.setValue].concat(setInsp);
-  console.log(setDataArray);
-  google.script.run
-    .withSuccessHandler(() => {
-      //ここに成功時の処理
-      console.log('ok');
-
-      isSpinnerShow.value = false;
-    })
-    .setData(setDataArray);
+  setTimeout(() => {
+    status.value = 'stop';
+    isSpinnerShow.value = false;
+  }, 3000);
 };
 const isSpinnerShow = ref(false);
 </script>
+<style>
+div#status {
+  text-align: center;
+  font-size: x-large;
+  text-decoration: underline; /* 下線 */
+  text-decoration-thickness: 0.5em; /* 線の太さ */
+  text-decoration-color: rgba(81, 255, 0, 0.4); /* 線の色 */
+  text-underline-offset: -0.6em; /* 線の位置。テキストに重なるようにやや上部にする */
+  text-decoration-skip-ink: none; /* 下線と文字列が重なる部分でも下線が省略されない（線が途切れない） */
+}
+</style>
 <template>
   <div class="d-grid gap-2 m-5">
+    <div id="status">{{ status }}</div>
     <button :val="mgrn" :class="btnClass" :value="setValue" @click="btnClick">
       {{ buttonName }}
       <span
