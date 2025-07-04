@@ -1,21 +1,45 @@
 {
-  "name": "gasvue",
-  "version": "1.0.0",
-  "description": "gasVue3",
+  "name": "vue3temp2025",
+  "version": "0.0.1",
+  "description": "vue3 template",
   "main": "index.js",
-  "workspaces": [
-    "./backend",
-    "./frontend"
-  ],
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "preview": "vite preview app/front",
+    "cpappsscript": "node -e \"require('fs').cpSync('./app/appsscript.json', './dist/appsscript.json',{recursive:true})\"",
+    "cpfstatic": "node -e \"require('fs').cpSync('./app/frontend/src/static', './dist',{recursive:true})\"",
+    "cpbstatic": "node -e \"require('fs').cpSync('./app/backend/src/templates/', './dist',{recursive:true})\"",
+    "buildfrontend": "vite build && npm run cpfstatic",
+    "buildbackend": "node esbuild.js && npm run cpappsscript && npm run cpbstatic",
+    "build": "npm run buildfrontend && npm run buildbackend",
+    "push": "clasp push",
+    "open": "clasp open-script",
+    "deploy": "npm run build && npm run push",
+    "deployfront": "npm run buildfrontend && npm run push",
+    "deploybackend": "npm run buildbackend && npm run push"
+  },
   "author": "yoshitaka",
   "license": "MIT",
-  "private": true,
-  "scripts": {
-    "build:backend": "yarn workspace backend run build",
-    "build:frontend": "yarn workspace frontend run build",
-    "build": "yarn run build:frontend",
-    "push": "clasp push",
-    "open": "clasp open --webapp",
-    "gen-dts": "yarn workspace backend run gen-dts"
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "@types/google-apps-script": "^1.0.99",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.10",
+    "esbuild": "^0.25.5",
+    "esbuild-gas-plugin": "^0.9.0",
+    "jest": "^30.0.4",
+    "jest-mock-extended": "^4.0.0",
+    "tailwindcss": "^4.1.11",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.2",
+    "vite-plugin-handlebars": "^2.0.0",
+    "vite-plugin-singlefile": "^2.3.0"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^6.0.0",
+    "vue": "^3.5.17"
   }
 }
